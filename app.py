@@ -2,8 +2,8 @@ import streamlit as st
 from utils.auth import login_user, register_user, user_exists
 import sqlite3
 from db_setup import init_database
+init_database()
 
-init_database()  # Ensures DB and schema exist before anything else
 
 st.set_page_config(page_title="Remedial Class Manager", layout="centered")
 st.title("🔑 Welcome to Remedial Class Manager")
