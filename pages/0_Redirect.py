@@ -1,7 +1,7 @@
 import streamlit as st
 import time
 
-st.set_page_config(page_title="Redirect", layout="centered")
+st.set_page_config(page_title="Redirect", layout="centered", page_icon="🏫")
 
 # --- Session Guard ---
 if "user" not in st.session_state or st.session_state.user is None:
