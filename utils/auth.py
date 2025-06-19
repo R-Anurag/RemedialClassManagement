@@ -72,3 +72,13 @@ def auth_gate():
     if not st.session_state.logged_in:
         show_login_page()
         st.stop()
+
+# Optional alias for create_user
+def register_user(username, password, role):
+    return create_user(username, password, role)
+
+# Check if a user already exists
+def user_exists(username):
+    cursor.execute("SELECT 1 FROM Users WHERE username = ?", (username,))
+    return cursor.fetchone() is not None
+
