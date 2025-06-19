@@ -22,7 +22,7 @@ if auth_mode == "Login":
         if user:
             st.success(f"Welcome, {user.get('name', username)} ({user['role']})!")
             st.session_state.user = user
-            st.switch_page("0_Home.py")  # Fixed path
+            st.switch_page("pages/0_Home.py")  # Fixed path
         else:
             st.error("Invalid credentials. Please try again.")
 
