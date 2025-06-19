@@ -7,16 +7,16 @@ init_database()
 st.set_page_config(page_title="Remedial Class Manager", layout="centered", page_icon="🏫" )
 st.title("🔑 Welcome to Remedial Class Manager")
 
-# Inject custom font with HTML and CSS
-st.markdown("""
-    <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+# # Inject custom font with HTML and CSS
+# st.markdown("""
+#     <style>
+#     @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
-    html, body, [class*="css"]  {
-        font-family: 'Poppins', sans-serif;
-    }
-    </style>
-""", unsafe_allow_html=True)
+#     html, body, [class*="css"]  {
+#         font-family: 'Poppins', sans-serif;
+#     }
+#     </style>
+# """, unsafe_allow_html=True)
 
 
 # --- Initialize session state ---
