@@ -118,7 +118,7 @@ def get_attendance_for_student(student_id):
         SELECT Attendance.date, Attendance.status, Subjects.name AS subject_name
         FROM Attendance
         JOIN RemedialClasses ON Attendance.class_id = RemedialClasses.class_id
-        JOIN Subjects ON RemedialClasses.subject_id = Subjects.id
+        JOIN Subjects ON RemedialClasses.subject_id = Subjects.subject_id
         WHERE Attendance.student_id = ?
         ORDER BY Attendance.date DESC
     """, (student_id,))
