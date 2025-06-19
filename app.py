@@ -22,7 +22,7 @@ if auth_mode == "Login":
         if user:
             st.success(f"Welcome, {user.get('name', username)} ({user['role']})!")
             st.session_state.user = user
-            st.switch_page("pages/Home.py")
+            st.switch_page("🔐 Welcome to Remedial Class Manager")
         else:
             st.error("Invalid credentials. Please try again.")
 
