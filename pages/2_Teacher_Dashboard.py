@@ -51,7 +51,7 @@ if teacher_classes:
             attendance_data = {}
 
             for name, sid in student_map.items():
-                status = st.radio(f"{name}", ["present", "absent"], horizontal=True, key=sid)
+                status = st.radio(f"{name}", ["present", "absent"], horizontal=True, key=f"att_{sid}")
                 attendance_data[sid] = status
 
             if st.form_submit_button("Submit Attendance"):
@@ -80,7 +80,17 @@ if teacher_classes:
         st.markdown("<div style='background-color:#FDF6F0; padding:1rem; border-radius:10px;'>All attendance records for this class</div>", unsafe_allow_html=True)
         records = get_attendance_for_class(selected_class_id)
         if records:
-            st.dataframe(records, use_container_width=True)
+            # Make sure columns match returned tuples
+            sample_len = len(records[0])
+            if sample_len == 5:
+                columns = ["ID", "ClassID", "StudentID", "Status", "Date"]
+            elif sample_len == 4:
+                columns = ["ClassID", "StudentID", "Status", "Date"]
+            else:
+                columns = [f"col_{i}" for i in range(sample_len)]
+
+            att_df = pd.DataFrame(records, columns=columns)
+            st.dataframe(att_df, use_container_width=True)
         else:
             st.warning("⚠️ No attendance records found for this class")
 
@@ -88,9 +98,18 @@ if teacher_classes:
     with tabs[3]:
         st.markdown("<div style='background-color:#F4F4FC; padding:1rem; border-radius:10px;'>Visual analysis of attendance and performance</div>", unsafe_allow_html=True)
 
-        att_df = pd.DataFrame(get_attendance_for_class(selected_class_id), columns=["ClassID", "StudentID", "Status", "Date"])
-        if not att_df.empty:
-            att_summary = att_df.groupby("Status").size().reset_index(name="Count")
+        # ATTENDANCE CHART
+        att_data = get_attendance_for_class(selected_class_id)
+        if att_data:
+            sample_len = len(att_data[0])
+            if sample_len == 5:
+                att_df = pd.DataFrame(att_data, columns=["ID", "ClassID", "StudentID", "Status", "Date"])
+            elif sample_len == 4:
+                att_df = pd.DataFrame(att_data, columns=["ClassID", "StudentID", "Status", "Date"])
+            else:
+                att_df = pd.DataFrame(att_data)
+
+            att_summary = att_df["Status"].value_counts().reset_index(name="Count").rename(columns={"index": "Status"})
             chart_att = px.pie(att_summary, names="Status", values="Count",
                                color_discrete_sequence=["#FFB6B9", "#A3D2CA"],
                                title="Attendance Distribution")
@@ -98,9 +117,16 @@ if teacher_classes:
         else:
             st.info("No attendance data available for charts.")
 
-        perf_data = get_performance_by_student(selected_class_id)
-        if perf_data:
-            perf_df = pd.DataFrame(perf_data, columns=["StudentID", "SubjectID", "Before", "After", "Date"])
+        # PERFORMANCE CHART
+        # NOTE: You probably want to call performance by student, not by class
+        performance_rows = []
+        for s_id in student_map.values():
+            perf = get_performance_by_student(s_id)
+            if perf:
+                performance_rows.extend(perf)
+
+        if performance_rows:
+            perf_df = pd.DataFrame(performance_rows, columns=["ID", "StudentID", "SubjectID", "Before", "After", "Date"])
             chart_perf = px.bar(perf_df, x="StudentID", y=["Before", "After"],
                                 barmode="group",
                                 color_discrete_map={"Before": "#FFB6B9", "After": "#A3D2CA"},
