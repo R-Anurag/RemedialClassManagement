@@ -1,0 +1,18 @@
+[theme]
+primaryColor = "#FFB6B9"                # Soft coral pink
+backgroundColor = "#FFF0F5"             # Lavender blush
+secondaryBackgroundColor = "#F8F9FA"    # Light off-white for containers
+textColor = "#3D3D3D"                   # Muted dark gray
+font = "sans serif"
+
+[server]
+headless = true
+enableCORS = false
+port = 8501
+
+[client]
+toolbarMode = "minimal"
+
+[general]
+pageTitle = "Remedial Class Manager"
+favicon = "https://cdn-icons-png.flaticon.com/512/2885/2885459.png"
