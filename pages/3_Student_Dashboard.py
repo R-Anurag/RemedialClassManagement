@@ -89,13 +89,13 @@ with st.container():
         feedback = st.text_area("Your Feedback", max_chars=500)
         submitted = st.form_submit_button("Submit Feedback")
         if submitted:
-            subject_ids = [k for k, v in subjects.items() if v == subject_name]
+            subject_ids = [k for k, v in subjects.items() if v == subject]
             if subject_ids:
                 subject_id = subject_ids[0]
-                add_feedback(student_id, subject_id, feedback, str(date.today()))
                 add_feedback(student_id, subject_id, feedback, str(date.today()))
                 st.success("Thank you for your feedback!")
             else:
                 st.error("Subject not found. Please try again.")
+
 
             
