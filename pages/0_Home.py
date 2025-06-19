@@ -1,12 +1,13 @@
 import streamlit as st
 import time
 
+# --- Session Guard ---
+if "user" not in st.session_state or st.session_state.user is None:
+    st.warning("⚠️ You are not logged in. Redirecting to login page...")
+    st.stop()  # Prevent further execution
+
 st.set_page_config(page_title="Home", layout="centered")
 st.title("🔐 Welcome to Remedial Class Manager")
-
-if "user" not in st.session_state:
-    st.warning("Please log in from the sidebar to continue.")
-    st.stop()
 
 user = st.session_state.user
 role = user["role"]
