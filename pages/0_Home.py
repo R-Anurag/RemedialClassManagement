@@ -3,7 +3,9 @@ import time
 
 # --- Session Guard ---
 if "user" not in st.session_state or st.session_state.user is None:
-    st.warning("⚠️ You are not logged in. Redirecting to login page...")
+    # Simulate short delay before redirect
+    with st.spinner("⚠️ You are not logged in. Redirecting to login page..."):
+        time.sleep(1)
     st.switch_page("app.py")
     st.stop()  # Prevent further execution
 
