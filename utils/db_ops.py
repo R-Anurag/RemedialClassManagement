@@ -111,6 +111,22 @@ def get_attendance_for_class(class_id):
     conn.close()
     return rows
 
+def get_attendance_for_student(student_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT Attendance.date, Attendance.status, Subjects.name AS subject_name
+        FROM Attendance
+        JOIN RemedialClasses ON Attendance.class_id = RemedialClasses.id
+        JOIN Subjects ON RemedialClasses.subject_id = Subjects.id
+        WHERE Attendance.student_id = ?
+        ORDER BY Attendance.date DESC
+    """, (student_id,))
+    rows = cursor.fetchall()
+    conn.close()
+    return rows
+
+
 # ---------- PERFORMANCE ----------
 def record_performance(student_id, subject_id, score_before, score_after, date):
     conn = get_connection()
