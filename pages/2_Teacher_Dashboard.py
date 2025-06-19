@@ -4,6 +4,8 @@ from utils.db_ops import (
     mark_attendance, get_all_students, record_performance, get_performance_by_student
 )
 from datetime import date
+import pandas as pd
+import plotly.express as px
 
 st.set_page_config(page_title="Teacher Dashboard", layout="wide")
 
@@ -36,7 +38,7 @@ if teacher_classes:
     selected_class_label = st.selectbox("Select a Class to Manage", options=list(class_map.keys()))
     selected_class_id = class_map[selected_class_label]
 
-    tabs = st.tabs(["📋 Attendance", "📈 Performance", "🗂️ Attendance Records"])
+    tabs = st.tabs(["📋 Attendance", "📈 Performance", "🗂️ Attendance Records", "📊 Visual Insights"])
 
     # ------------ ATTENDANCE TAB ------------
     with tabs[0]:
@@ -81,6 +83,31 @@ if teacher_classes:
             st.dataframe(records, use_container_width=True)
         else:
             st.warning("⚠️ No attendance records found for this class")
+
+    # ------------ VISUAL INSIGHTS TAB ------------
+    with tabs[3]:
+        st.markdown("<div style='background-color:#F4F4FC; padding:1rem; border-radius:10px;'>Visual analysis of attendance and performance</div>", unsafe_allow_html=True)
+
+        att_df = pd.DataFrame(get_attendance_for_class(selected_class_id), columns=["ClassID", "StudentID", "Status", "Date"])
+        if not att_df.empty:
+            att_summary = att_df.groupby("Status").size().reset_index(name="Count")
+            chart_att = px.pie(att_summary, names="Status", values="Count",
+                               color_discrete_sequence=["#FFB6B9", "#A3D2CA"],
+                               title="Attendance Distribution")
+            st.plotly_chart(chart_att, use_container_width=True)
+        else:
+            st.info("No attendance data available for charts.")
+
+        perf_data = get_performance_by_student(selected_class_id)
+        if perf_data:
+            perf_df = pd.DataFrame(perf_data, columns=["StudentID", "SubjectID", "Before", "After", "Date"])
+            chart_perf = px.bar(perf_df, x="StudentID", y=["Before", "After"],
+                                barmode="group",
+                                color_discrete_map={"Before": "#FFB6B9", "After": "#A3D2CA"},
+                                title="Performance Before vs After")
+            st.plotly_chart(chart_perf, use_container_width=True)
+        else:
+            st.info("No performance data available for charts.")
 
 else:
     st.warning("⚠️ No remedial classes assigned to you.")
