@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 from utils.db_ops import (
-    get_all_remedial_classes, get_performance_by_student, 
+    get_all_remedial_classes, get_performance_by_student,
     get_attendance_for_student, add_feedback, get_all_subjects
 )
 from datetime import date
@@ -54,18 +54,21 @@ with st.container():
     st.subheader("📈 My Performance")
     perf = get_performance_by_student(student_id)
     if perf:
-        perf_df = pd.DataFrame(perf, columns=["ID", "StudentID", "SubjectID", "Before", "After", "Date"])
-        perf_df["Subject"] = perf_df["SubjectID"].map(subjects)
+        try:
+            perf_df = pd.DataFrame(perf, columns=["ID", "StudentID", "SubjectID", "Before", "After", "Date"])
+            perf_df["Subject"] = perf_df["SubjectID"].map(subjects)
 
-        chart = px.line(
-            perf_df,
-            x="Date",
-            y=["Before", "After"],
-            color_discrete_map={"Before": "#FFB6B9", "After": "#A3D2CA"},
-            labels={"value": "Score", "variable": "Test Type"},
-            title="Performance Before vs After Remedial Classes"
-        )
-        st.plotly_chart(chart, use_container_width=True)
+            chart = px.line(
+                perf_df,
+                x="Date",
+                y=["Before", "After"],
+                color_discrete_map={"Before": "#FFB6B9", "After": "#A3D2CA"},
+                labels={"value": "Score", "variable": "Test Type"},
+                title="Performance Before vs After Remedial Classes"
+            )
+            st.plotly_chart(chart, use_container_width=True)
+        except Exception as e:
+            st.error("Error displaying performance chart. Please contact admin.")
     else:
         st.info("No performance data available.")
 
@@ -74,10 +77,13 @@ with st.container():
     st.subheader("🗂️ My Attendance Record")
     att = get_attendance_for_student(student_id)
     if att:
-        att_df = pd.DataFrame(att, columns=["ID", "ClassID", "StudentID", "Status", "Date"])
-        attendance_rate = att_df["Status"].value_counts(normalize=True) * 100
-        st.metric("Attendance Rate", f"{attendance_rate.get('present', 0):.1f}% Present")
-        st.dataframe(att_df[["Date", "Status"]].sort_values("Date"), use_container_width=True)
+        try:
+            att_df = pd.DataFrame(att, columns=["ID", "ClassID", "StudentID", "Status", "Date"])
+            attendance_rate = att_df["Status"].value_counts(normalize=True) * 100
+            st.metric("Attendance Rate", f"{attendance_rate.get('present', 0):.1f}% Present")
+            st.dataframe(att_df[["Date", "Status"]].sort_values("Date"), use_container_width=True)
+        except Exception:
+            st.warning("Attendance data format issue. Please check the backend.")
     else:
         st.info("No attendance records available.")
 
@@ -96,6 +102,3 @@ with st.container():
                 st.success("Thank you for your feedback!")
             else:
                 st.error("Subject not found. Please try again.")
-
-
-            
