@@ -93,9 +93,9 @@ with st.container():
             if subject_ids:
                 subject_id = subject_ids[0]
                 add_feedback(student_id, subject_id, feedback, str(date.today()))
+                add_feedback(student_id, subject_id, feedback, str(date.today()))
                 st.success("Thank you for your feedback!")
             else:
                 st.error("Subject not found. Please try again.")
 
-            add_feedback(student_id, subject_id, feedback, str(date.today()))
-            st.success("Thank you for your feedback!")
+            
