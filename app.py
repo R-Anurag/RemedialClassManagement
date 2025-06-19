@@ -1,97 +1,9 @@
 import streamlit as st
 from utils.auth import login_user, register_user, user_exists
 import sqlite3
+from db_setup import init_database
 
-def init_db():
-    conn = sqlite3.connect("remedial_class.db")
-    cursor = conn.cursor()
-
-    # Create tables
-    cursor.execute("""
-    CREATE TABLE IF NOT EXISTS Users (
-        user_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT,
-        username TEXT UNIQUE,
-        password_hash TEXT,
-        role TEXT
-    )
-    """)
-    cursor.execute("""
-    CREATE TABLE IF NOT EXISTS Students (
-        student_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT,
-        email TEXT,
-        phone TEXT,
-        course TEXT,
-        year TEXT
-    )
-    """)
-    cursor.execute("""
-    CREATE TABLE IF NOT EXISTS Teachers (
-        teacher_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT,
-        email TEXT,
-        phone TEXT,
-        subject TEXT
-    )
-    """)
-    cursor.execute("""
-    CREATE TABLE IF NOT EXISTS Subjects (
-        subject_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT,
-        department TEXT
-    )
-    """)
-    cursor.execute("""
-    CREATE TABLE IF NOT EXISTS RemedialClasses (
-        class_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        subject_id INTEGER,
-        teacher_id INTEGER,
-        date TEXT,
-        time TEXT,
-        room TEXT
-    )
-    """)
-    cursor.execute("""
-    CREATE TABLE IF NOT EXISTS StudentClassMapping (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        student_id INTEGER,
-        class_id INTEGER
-    )
-    """)
-    cursor.execute("""
-    CREATE TABLE IF NOT EXISTS Attendance (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        class_id INTEGER,
-        student_id INTEGER,
-        status TEXT,
-        date TEXT
-    )
-    """)
-    cursor.execute("""
-    CREATE TABLE IF NOT EXISTS Performance (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        student_id INTEGER,
-        subject_id INTEGER,
-        score_before INTEGER,
-        score_after INTEGER,
-        date TEXT
-    )
-    """)
-    cursor.execute("""
-    CREATE TABLE IF NOT EXISTS Feedback (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        class_id INTEGER,
-        student_id INTEGER,
-        comment TEXT,
-        rating INTEGER
-    )
-    """)
-
-    conn.commit()
-    conn.close()
-
-init_db()
+init_database()  # Ensures DB and schema exist before anything else
 
 st.set_page_config(page_title="Remedial Class Manager", layout="centered")
 st.title("🔑 Welcome to Remedial Class Manager")
