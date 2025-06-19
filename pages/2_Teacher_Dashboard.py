@@ -9,6 +9,9 @@ import plotly.express as px
 
 import streamlit as st
 
+
+st.set_page_config(page_title="Teacher Dashboard", layout="wide", page_icon="🏫")
+
 # Redirect to login if user not authenticated
 if "user" not in st.session_state or st.session_state.user is None:
     st.warning("🔒 You must be logged in to view this page.")
@@ -19,8 +22,6 @@ if "user_role" not in st.session_state or st.session_state.user_role != "teacher
     st.error("🚫 Access denied. Teachers only.")
     st.stop()
 
-
-st.set_page_config(page_title="Teacher Dashboard", layout="wide")
 
 # ----------------- HEADER -----------------
 st.title("📘 Teacher Dashboard")
