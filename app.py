@@ -5,7 +5,7 @@ from db_setup import init_database
 init_database()
 
 
-st.set_page_config(page_title="Remedial Class Manager", layout="centered", page_icon="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRojw3ZZ2SuhZ2LkNRGarOnhbvhUiwGvs55jg&s" )
+st.set_page_config(page_title="Remedial Class Manager", layout="centered", page_icon="✨" )
 st.title("🔑 Welcome to Remedial Class Manager")
 
 # --- Initialize session state ---
