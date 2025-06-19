@@ -1,8 +1,9 @@
 [theme]
+base = "light"
 primaryColor = "#FFB6B9"                # Soft coral pink
 backgroundColor = "#FFF0F5"             # Lavender blush
-secondaryBackgroundColor = "#F8F9FA"    # Light off-white for containers
-textColor = "#3D3D3D"                   # Muted dark gray
+secondaryBackgroundColor = "#F8F9FA"    # Off-white containers
+textColor = "#3D3D3D"                   # Dark muted gray
 font = "sans serif"
 
 [server]
