@@ -9,7 +9,6 @@ from utils.db_ops import (
 st.set_page_config(page_title="Admin Dashboard", layout="wide")
 st.title("🛠️ Admin Dashboard")
 
-# Tabs for managing entities
 tabs = st.tabs(["Students", "Teachers", "Subjects", "Remedial Classes"])
 
 # ------------------------ STUDENTS ------------------------
@@ -29,7 +28,10 @@ with tabs[0]:
 
     st.subheader("📋 All Students")
     students = get_all_students()
-    st.dataframe(students, use_container_width=True)
+    if students:
+        st.dataframe(students, use_container_width=True)
+    else:
+        st.info("No students found.")
 
 # ------------------------ TEACHERS ------------------------
 with tabs[1]:
@@ -47,7 +49,10 @@ with tabs[1]:
 
     st.subheader("📋 All Teachers")
     teachers = get_all_teachers()
-    st.dataframe(teachers, use_container_width=True)
+    if teachers:
+        st.dataframe(teachers, use_container_width=True)
+    else:
+        st.info("No teachers found.")
 
 # ------------------------ SUBJECTS ------------------------
 with tabs[2]:
@@ -63,27 +68,37 @@ with tabs[2]:
 
     st.subheader("📋 All Subjects")
     subjects = get_all_subjects()
-    st.dataframe(subjects, use_container_width=True)
+    if subjects:
+        st.dataframe(subjects, use_container_width=True)
+    else:
+        st.info("No subjects found.")
 
 # ------------------------ REMEDIAL CLASSES ------------------------
 with tabs[3]:
     st.header("🏫 Schedule Remedial Classes")
 
-    # Dynamic dropdowns
     subject_options = get_all_subjects()
     teacher_options = get_all_teachers()
 
-    with st.form("add_class_form"):
-        subject_id = st.selectbox("Subject", options=[(s[0], s[1]) for s in subject_options], format_func=lambda x: x[1])[0]
-        teacher_id = st.selectbox("Teacher", options=[(t[0], t[1]) for t in teacher_options], format_func=lambda x: x[1])[0]
-        date = st.date_input("Date")
-        time = st.time_input("Time")
-        room = st.text_input("Room")
-        submitted = st.form_submit_button("Schedule Class")
-        if submitted:
-            add_remedial_class(subject_id, teacher_id, str(date), str(time), room)
-            st.success("Class scheduled successfully")
+    if not subject_options or not teacher_options:
+        st.warning("Please make sure both subjects and teachers are added before scheduling a class.")
+    else:
+        with st.form("add_class_form"):
+            selected_subject = st.selectbox("Subject", options=subject_options, format_func=lambda s: s[1])
+            selected_teacher = st.selectbox("Teacher", options=teacher_options, format_func=lambda t: t[1])
+            date = st.date_input("Date")
+            time = st.time_input("Time")
+            room = st.text_input("Room")
+            submitted = st.form_submit_button("Schedule Class")
+            if submitted:
+                subject_id = selected_subject[0]
+                teacher_id = selected_teacher[0]
+                add_remedial_class(subject_id, teacher_id, str(date), str(time), room)
+                st.success("Class scheduled successfully")
 
     st.subheader("📋 All Scheduled Classes")
     classes = get_all_remedial_classes()
-    st.dataframe(classes, use_container_width=True)
+    if classes:
+        st.dataframe(classes, use_container_width=True)
+    else:
+        st.info("No remedial classes scheduled yet.")
