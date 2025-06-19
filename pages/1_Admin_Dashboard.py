@@ -6,6 +6,13 @@ from utils.db_ops import (
     add_remedial_class, get_all_remedial_classes
 )
 
+import streamlit as st
+
+# Redirect to login if user not authenticated
+if "user" not in st.session_state or st.session_state.user is None:
+    st.warning("🔒 You must be logged in to view this page.")
+    st.stop()  # Prevent the rest of the page from running
+
 st.set_page_config(page_title="Admin Dashboard", layout="wide")
 st.title("🛠️ Admin Dashboard")
 
