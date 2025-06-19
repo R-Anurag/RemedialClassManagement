@@ -9,7 +9,7 @@ if "user" not in st.session_state or st.session_state.user is None:
     st.switch_page("app.py")
     st.stop()  # Prevent further execution
 
-st.set_page_config(page_title="Home", layout="centered")
+st.set_page_config(page_title="Redirect", layout="centered")
 st.title("🔐 Welcome to Remedial Class Manager")
 
 user = st.session_state.user
