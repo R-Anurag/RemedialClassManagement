@@ -141,10 +141,16 @@ def record_performance(student_id, subject_id, score_before, score_after, date):
 def get_performance_by_student(student_id):
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM Performance WHERE student_id = ?", (student_id,))
+    cursor.execute("""
+        SELECT performance_id, student_id, subject_id, score_before, score_after, date
+        FROM Performance
+        WHERE student_id = ?
+        ORDER BY date ASC
+    """, (student_id,))
     rows = cursor.fetchall()
     conn.close()
     return rows
+
 
 # ---------- FEEDBACK ----------
 def add_feedback(class_id, student_id, comment, rating):
