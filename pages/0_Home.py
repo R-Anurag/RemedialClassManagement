@@ -4,6 +4,7 @@ import time
 # --- Session Guard ---
 if "user" not in st.session_state or st.session_state.user is None:
     st.warning("⚠️ You are not logged in. Redirecting to login page...")
+    st.switch_page("")
     st.stop()  # Prevent further execution
 
 st.set_page_config(page_title="Home", layout="centered")
