@@ -61,6 +61,7 @@ with st.container():
     if perf:
         try:
             perf_df = pd.DataFrame(perf, columns=["ID", "StudentID", "SubjectID", "Before", "After", "Date"])
+            perf_df["Date"] = pd.to_datetime(perf_df["Date"])  # Ensure correct datetime format
             perf_df["Subject"] = perf_df["SubjectID"].map(subjects)
 
             chart = px.line(
@@ -71,11 +72,16 @@ with st.container():
                 labels={"value": "Score", "variable": "Test Type"},
                 title="Performance Before vs After Remedial Classes"
             )
+
+            # 🔍 Optional improvement: add markers on lines
+            chart.update_traces(mode='lines+markers')
+
             st.plotly_chart(chart, use_container_width=True)
         except Exception as e:
             st.error("Error displaying performance chart. Please contact admin.")
     else:
         st.info("No performance data available.")
+
 
 # ----------------- ATTENDANCE -----------------
 with st.container():
