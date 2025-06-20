@@ -115,7 +115,13 @@ def get_attendance_for_student(student_id):
     conn = get_connection()
     cursor = conn.cursor()
     cursor.execute("""
-        SELECT Attendance.date, Attendance.status, Subjects.name AS subject_name
+        SELECT 
+            Attendance.attendance_id,
+            Attendance.class_id,
+            Attendance.student_id,
+            Attendance.status,
+            Attendance.date,
+            Subjects.name AS subject_name
         FROM Attendance
         JOIN RemedialClasses ON Attendance.class_id = RemedialClasses.class_id
         JOIN Subjects ON RemedialClasses.subject_id = Subjects.subject_id
@@ -125,7 +131,6 @@ def get_attendance_for_student(student_id):
     rows = cursor.fetchall()
     conn.close()
     return rows
-
 
 # ---------- PERFORMANCE ----------
 def record_performance(student_id, subject_id, score_before, score_after, date):
