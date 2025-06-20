@@ -14,10 +14,10 @@ if "user" not in st.session_state or st.session_state.user is None:
     st.warning("🔒 You must be logged in to view this page.")
     st.stop()  # Prevent the rest of the page from running
 
-# Protect teacher dashboard
-if "user_role" not in st.session_state or st.session_state.user_role != "teacher":
-    st.error("🚫 Access denied. Teachers only.")
-    st.stop()
+# # Protect teacher dashboard
+# if "user_role" not in st.session_state or st.session_state.user_role != "teacher":
+#     st.error("🚫 Access denied. Teachers only.")
+#     st.stop()
 
 
 # ----------------- HEADER -----------------
