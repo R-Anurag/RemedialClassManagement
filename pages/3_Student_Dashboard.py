@@ -83,14 +83,18 @@ with st.container():
     att = get_attendance_for_student(student_id)
     if att:
         try:
-            att_df = pd.DataFrame(att, columns=["ID", "ClassID", "StudentID", "Status", "Date"])
+            att_df = pd.DataFrame(att, columns=["ID", "ClassID", "StudentID", "Status", "Date", "Subject"])
             attendance_rate = att_df["Status"].value_counts(normalize=True) * 100
             st.metric("Attendance Rate", f"{attendance_rate.get('present', 0):.1f}% Present")
-            st.dataframe(att_df[["Date", "Status"]].sort_values("Date"), use_container_width=True)
+            st.dataframe(
+                att_df[["Date", "Subject", "Status"]].sort_values("Date"),
+                use_container_width=True
+            )
         except Exception:
-            st.warning("Attendance data format issue. Please check the backend.")
+            st.warning("⚠️ Attendance data format issue. Please check the backend.")
     else:
         st.info("No attendance records available.")
+
 
 # ----------------- FEEDBACK -----------------
 with st.container():
