@@ -60,27 +60,38 @@ with st.container():
     perf = get_performance_by_student(student_id)
     if perf:
         try:
+            # Load into DataFrame
             perf_df = pd.DataFrame(perf, columns=["ID", "StudentID", "SubjectID", "Before", "After", "Date"])
-            perf_df["Date"] = pd.to_datetime(perf_df["Date"])  # Ensure correct datetime format
+            perf_df["Date"] = pd.to_datetime(perf_df["Date"])  # Ensure datetime
             perf_df["Subject"] = perf_df["SubjectID"].map(subjects)
 
-            chart = px.line(
+            # Melt to long format for line chart
+            long_df = pd.melt(
                 perf_df,
+                id_vars=["Date", "Subject"],
+                value_vars=["Before", "After"],
+                var_name="Test Type",
+                value_name="Score"
+            )
+
+            # Plot with lines and markers
+            chart = px.line(
+                long_df,
                 x="Date",
-                y=["Before", "After"],
-                color_discrete_map={"Before": "#FFB6B9", "After": "#A3D2CA"},
-                labels={"value": "Score", "variable": "Test Type"},
+                y="Score",
+                color="Test Type",
+                markers=True,
+                line_shape="linear",
+                labels={"Score": "Score", "Date": "Date"},
                 title="Performance Before vs After Remedial Classes"
             )
 
-            # 🔍 Optional improvement: add markers on lines
-            chart.update_traces(mode='lines+markers')
-
             st.plotly_chart(chart, use_container_width=True)
         except Exception as e:
-            st.error("Error displaying performance chart. Please contact admin.")
+            st.error(f"Error displaying performance chart. {e}")
     else:
         st.info("No performance data available.")
+
 
 
 # ----------------- ATTENDANCE -----------------
