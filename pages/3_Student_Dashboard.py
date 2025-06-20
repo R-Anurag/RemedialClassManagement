@@ -98,14 +98,13 @@ with st.container():
     with st.form("feedback_form"):
         subject = st.selectbox("Subject", list(subjects.values()))
         feedback = st.text_area("Your Feedback", max_chars=500)
-        rating = st.slider("Rating (1 to 5)", min_value=1, max_value=5, value=3)
+        rating = st.slider("Rate the class (1 = poor, 5 = excellent)", 1, 5, 3)
         submitted = st.form_submit_button("Submit Feedback")
 
         if submitted:
             subject_ids = [k for k, v in subjects.items() if v == subject]
             if subject_ids:
                 subject_id = subject_ids[0]
-                # Validate feedback text (optional)
                 if not feedback.strip():
                     st.error("Please enter some feedback before submitting.")
                 else:
@@ -116,3 +115,4 @@ with st.container():
                         st.error(f"Failed to submit feedback: {e}")
             else:
                 st.error("Subject not found. Please try again.")
+
