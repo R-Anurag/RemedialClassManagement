@@ -13,7 +13,7 @@ st.set_page_config(page_title="Student Dashboard", layout="wide", page_icon="�
 # Redirect to login if user not authenticated
 if "user" not in st.session_state or st.session_state.user is None:
     st.warning("🔒 You must be logged in to view this page.")
-    st.stop()  # Prevent the rest of the page from running
+    st.stop()
 
 # ----------------- HEADER -----------------
 st.title("🎓 Student Dashboard")
@@ -98,12 +98,21 @@ with st.container():
     with st.form("feedback_form"):
         subject = st.selectbox("Subject", list(subjects.values()))
         feedback = st.text_area("Your Feedback", max_chars=500)
+        rating = st.slider("Rating (1 to 5)", min_value=1, max_value=5, value=3)
         submitted = st.form_submit_button("Submit Feedback")
+
         if submitted:
             subject_ids = [k for k, v in subjects.items() if v == subject]
             if subject_ids:
                 subject_id = subject_ids[0]
-                add_feedback(student_id, subject_id, feedback, str(date.today()))
-                st.success("Thank you for your feedback!")
+                # Validate feedback text (optional)
+                if not feedback.strip():
+                    st.error("Please enter some feedback before submitting.")
+                else:
+                    try:
+                        add_feedback(subject_id, student_id, feedback, rating)
+                        st.success("Thank you for your feedback!")
+                    except Exception as e:
+                        st.error(f"Failed to submit feedback: {e}")
             else:
                 st.error("Subject not found. Please try again.")
