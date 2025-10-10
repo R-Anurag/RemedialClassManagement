@@ -4,33 +4,32 @@ Welcome to the **Remedial Class Management** project! We are very excited that y
 
 By following this guide, you help us maintain code quality and keep the project workflow smooth.
 
-## Code of Conduct
-
-We are committed to creating an open, welcoming, and inclusive environment. All contributors are expected to adhere to the [Contributor Covenant Code of Conduct](https://www.contributor-covenant.org/version/2/0/code_of_conduct/){:target="\_blank"}.
-
----
-
 ## Code Style
 
-Consistency is key. While this project welcomes contributions in various languages and frameworks, please ensure you follow these basic conventions for the language you are using:
+Since this project is primarily built using **Python** and **Streamlit**, all code contributions must adhere to the **PEP 8 style guide**, which is the official standard for Python.
 
 ### 1. Naming Conventions
 
-| Element                         | Recommended Naming Style                       | Example                           |
-| :------------------------------ | :--------------------------------------------- | :-------------------------------- |
-| **Variables/Functions/Methods** | `camelCase` (e.g., JavaScript, Python)         | `calculateAverage`, `studentList` |
-| **Classes/Components**          | `PascalCase` (e.g., Java, C#, React Component) | `StudentModel`, `RemedialForm`    |
-| **Global Constants**            | `UPPER_SNAKE_CASE`                             | `MAX_SCORE_LIMIT`                 |
+Please use the following conventions:
+
+| Element                         | PEP 8 Naming Style                                               | Example                                 |
+| :------------------------------ | :--------------------------------------------------------------- | :-------------------------------------- |
+| **Variables/Functions/Methods** | **`snake_case`** (all lowercase, words separated by underscores) | `calculate_average`, `get_student_list` |
+| **Classes/Components**          | **`PascalCase`**                                                 | `StudentModel`, `DatabaseConnector`     |
+| **Global Constants**            | `UPPER_SNAKE_CASE`                                               | `MAX_SCORE_LIMIT`                       |
+| **Modules/Files**               | Short, all lowercase with underscores                            | `db_ops.py`, `app.py`                   |
 
 ### 2. Formatting
 
-- **Indentation**: Use **4 spaces** for indentation (avoid using tabs).
-- **Spacing**: Use adequate spacing around operators, after commas, and inside code blocks for optimal readability.
-- **New Files**: If you are adding a new file, ensure it has the correct extension and its name clearly reflects its content (e.g., `remedial_service.py`, `Student.java`).
+- **Indentation**: Use **4 spaces** for indentation. **Tabs are strictly prohibited.**
+- **Line Length**: Limit all lines of code to a maximum of **79 characters**.
+- **Imports**: Imports should generally be on separate lines and grouped (standard library, third-party, local imports) as recommended by PEP 8.
+- **Type Hinting**: Please use Python type hints (`def func(arg: str) -> bool:`) for new functions and methods where appropriate.
 
-### 3. Comments
+### 3. Comments and Documentation
 
-- Provide comments sparingly, mainly for public functions, complex business logic, or ambiguous code sections.
+- Use docstrings (triple quotes `"""..."""`) for documenting modules, classes, and functions.
+- Provide comments sparingly for complex logic.
 - Delete any unnecessary _commented-out code_ before submitting a PR.
 
 ---
@@ -60,7 +59,7 @@ Follow these steps to ensure your contribution is integrated smoothly:
 - **Fork** the **`R-Anurag/RemedialClassManagement`** repository to your personal GitHub account.
 - **Clone** your forked repository to your local machine.
   ```bash
-  git clone [https://github.com/YOUR_USERNAME/RemedialClassManagement.git](https://github.com/YOUR_USERNAME/RemedialClassManagement.git)
+  git clone [https://github.com/your-username/RemedialClassManagement.git]
   cd RemedialClassManagement
   ```
 
@@ -86,11 +85,24 @@ Follow these steps to ensure your contribution is integrated smoothly:
   Adds validation logic to ensure the entered score is within the 0-100 range.
   ```
 
+**General Format:** `<type>(<scope>): <short description>`
+
+| Type           | Purpose                                                            | Example                                                |
+| :------------- | :----------------------------------------------------------------- | :----------------------------------------------------- |
+| **`feat`**     | A new feature.                                                     | `feat(chart): implement candlestick chart view`        |
+| **`fix`**      | A bug fix.                                                         | `fix(layout): fix sidebar collapse issue on mobile`    |
+| **`docs`**     | Documentation changes only.                                        | `docs: update CONTRIBUTING.md`                         |
+| **`refactor`** | Code restructuring that doesn't fix a bug or add a feature.        | `refactor(auth): rename login service to auth service` |
+| **`test`**     | Adding or correcting tests.                                        | `test: add unit test for StockCard component`          |
+| **`chore`**    | Changes to the build process, package manager, or auxiliary tools. | `chore: update webpack configuration`                  |
+
+---
+
 ### 4. Push and Create a PR
 
 - **Push** your new branch to GitHub.
   ```bash
-  git push origin feature/your-branch-name
+  git push origin fix/resolve-login-issue
   ```
 - Go to your repository page on GitHub and click **"Compare & pull request"** to open a new PR.
 - Ensure the PR target is the **`main`** branch of the upstream repository (`R-Anurag/RemedialClassManagement`).
