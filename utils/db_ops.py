@@ -1,4 +1,5 @@
 import sqlite3
+import pandas as pd
 
 DB_NAME = 'remedial_class.db'
 
@@ -175,3 +176,44 @@ def get_feedback_for_class(class_id):
     rows = cursor.fetchall()
     conn.close()
     return rows
+# ---------- EXPORT UTILITIES ----------
+def export_student_data(student_id):
+    """Fetch attendance + performance data for one student and return two DataFrames"""
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    # Attendance data
+    cursor.execute("""
+        SELECT 
+            Attendance.date,
+            Subjects.name AS subject,
+            Attendance.status
+        FROM Attendance
+        JOIN RemedialClasses ON Attendance.class_id = RemedialClasses.class_id
+        JOIN Subjects ON RemedialClasses.subject_id = Subjects.subject_id
+        WHERE Attendance.student_id = ?
+        ORDER BY Attendance.date ASC
+    """, (student_id,))
+    attendance = cursor.fetchall()
+
+    # Performance data
+    cursor.execute("""
+        SELECT 
+            Subjects.name AS subject,
+            Performance.score_before,
+            Performance.score_after,
+            Performance.date
+        FROM Performance
+        JOIN Subjects ON Performance.subject_id = Subjects.subject_id
+        WHERE Performance.student_id = ?
+        ORDER BY Performance.date ASC
+    """, (student_id,))
+    performance = cursor.fetchall()
+
+    conn.close()
+
+    # Convert to DataFrames
+    att_df = pd.DataFrame(attendance, columns=["Date", "Subject", "Status"])
+    perf_df = pd.DataFrame(performance, columns=["Subject", "Before", "After", "Date"])
+    return att_df, perf_df
+

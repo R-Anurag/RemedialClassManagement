@@ -34,7 +34,7 @@ def init_schema():
     # Create Teachers table
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS Teachers (
-        teacher_id INTEGER PRIMARY KEY AUTOINCREMENT,
+        teacher_id INTEGER PRIMARY KEY AUTOINCREMENT, 
         name TEXT NOT NULL,
         email TEXT UNIQUE NOT NULL,
         phone TEXT,
@@ -119,3 +119,4 @@ def init_schema():
     conn.commit()
     conn.close()
     print("✅ Database and tables initialized.")
+    

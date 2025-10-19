@@ -25,6 +25,9 @@ A role-based web application for managing remedial classes in schools or college
 - Visualize performance improvement
 - Track attendance rate
 - Submit feedback on classes
+- Preview and download attendance or performance data as CSV
+- Export complete progress reports as PDF
+
 
 ---
 
@@ -80,7 +83,10 @@ A role-based web application for managing remedial classes in schools or college
 4. **Run the app**
    ```bash
    streamlit run app.py
-   ```
+   
+> Once the app is running, log in as a **Student**.  
+> You can now **preview and download** your performance, attendance, or complete progress report directly from your dashboard.
+   
 
 ---
 
@@ -97,7 +103,6 @@ Built with ❤️ for a DBMS course project.
 
 ## 🧼 To-Do / Enhancements
 
-- [ ] CSV export for attendance/performance
 - [ ] Email notifications
 - [ ] UI polish with custom themes
 - [ ] Admin activity logs
@@ -107,6 +112,24 @@ Built with ❤️ for a DBMS course project.
 ## 📸 Screenshots (Optional)
 
 > Add screenshots of dashboards if submitting/presenting
+
+**🎓 Student Dashboard – Download Progress Report Section**
+This section allows students to preview and download their academic progress reports directly from the dashboard in different formats (CSV/PDF).  
+It includes three subsections:
+1. **Performance Section** – Preview and download performance data.
+2. **Attendance Section** – View attendance history and export attendance report.
+3. **Full Report Section** – Combined export of attendance and performance in a single PDF.
+
+## 📈 Performance Section
+![Performance Download](student_dashboard_export.png)
+
+## 🗂️ Attendance Section
+![Attendance Download](student_dashboard_export2.png)
+
+## 📤 Full Report Section
+![Full Report Download](student_dashboard_export3.png)
+
+
 
 ---
 
