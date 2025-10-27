@@ -55,6 +55,112 @@ st.markdown("""
 
 
 st.set_page_config(page_title="Student Dashboard", layout="wide", page_icon="🏫")
+def apply_theme(theme):
+    if theme == "dark":
+        st.markdown("""
+            <style>
+                /* ==== GENERAL LAYOUT ==== */
+                body, .stApp {
+                    background-color: #0E1117;
+                    color: #E4E6EB;
+                }
+
+                /* ==== HEADERS ==== */
+                h1, h2, h3, h4, h5, h6 {
+                    color: #F1F3F5 !important;
+                    font-weight: 600 !important;
+                }
+
+                /* ==== SIDEBAR ==== */
+                section[data-testid="stSidebar"] {
+                    background: linear-gradient(180deg, #1E1E2F 0%, #161625 100%);
+                    color: #E4E6EB;
+                    border-right: 1px solid #2C2C3A;
+                }
+                section[data-testid="stSidebar"] .css-1v3fvcr {
+                    color: #E4E6EB !important;
+                }
+                section[data-testid="stSidebar"] .css-1v3fvcr:hover {
+                    color: #A4B1FF !important;
+                }
+
+                /* ==== BUTTONS ==== */
+                .stButton>button {
+                    background: linear-gradient(90deg, #6366F1 0%, #8B5CF6 100%);
+                    color: #FFFFFF;
+                    border: none;
+                    border-radius: 8px;
+                    font-weight: 600;
+                    transition: all 0.2s ease-in-out;
+                }
+                .stButton>button:hover {
+                    transform: scale(1.03);
+                    box-shadow: 0 0 15px rgba(139, 92, 246, 0.6);
+                }
+
+                /* ==== INPUT FIELDS ==== */
+                input, textarea, select {
+                    background-color: #1A1D26 !important;
+                    color: #E4E6EB !important;
+                    border: 1px solid #3A3A4A !important;
+                    border-radius: 6px !important;
+                }
+
+                /* ==== SLIDERS ==== */
+                div[data-baseweb="slider"] > div {
+                    background: linear-gradient(90deg, #8B5CF6, #6366F1);
+                    height: 6px !important;
+                    border-radius: 3px;
+                }
+
+                /* ==== TABS ==== */
+                .stTabs [role="tablist"] button {
+                    background-color: #1E1E2F !important;
+                    color: #E4E6EB !important;
+                    border-radius: 8px 8px 0 0 !important;
+                    font-weight: 500;
+                }
+                .stTabs [role="tablist"] button[aria-selected="true"] {
+                    background-color: #292B3A !important;
+                    color: #A5B4FC !important;
+                    border-bottom: 3px solid #8B5CF6 !important;
+                }
+
+                /* ==== DATAFRAMES / TABLES ==== */
+                .stDataFrame, .stTable {
+                    background-color: #1A1D26 !important;
+                    color: #F1F3F5 !important;
+                    border-radius: 10px !important;
+                }
+
+                /* ==== EXPANDERS ==== */
+                div[data-testid="stExpander"] {
+                    background-color: #1A1D26 !important;
+                    color: #F1F3F5 !important;
+                    border-radius: 8px !important;
+                    border: 1px solid #2C2C3A !important;
+                }
+
+                /* ==== DOWNLOAD BUTTON ==== */
+                div[data-testid="stDownloadButton"] > button {
+                    background: linear-gradient(90deg, #6366F1, #8B5CF6);
+                    color: white !important;
+                    border: none !important;
+                    border-radius: 8px !important;
+                    font-weight: 600;
+                    transition: 0.3s;
+                }
+                div[data-testid="stDownloadButton"] > button:hover {
+                    transform: scale(1.05);
+                    box-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+                }
+            </style>
+        """, unsafe_allow_html=True)
+
+    else:
+       pass
+        
+apply_theme(st.session_state["theme"])    
 # Redirect to login if user not authenticated
 if "user" not in st.session_state or st.session_state.user is None:
     st.warning("🔒 You must be logged in to view this page.")
@@ -65,14 +171,25 @@ st.title("🎓 Student Dashboard")
 user = st.session_state.user
 student_id = user["user_id"]
 
+# --- Themed Welcome Box for Student Dashboard ---
+if st.session_state.get("theme", "light") == "dark":
+    bg_color = "#1E1E2F"      
+    text_color = "#E4E6EB"    
+else:
+    bg_color = "#FFE0E9"      
+    text_color = "#444"       
+
 st.markdown(
     f"""
-    <div style='background-color:#FFE0E9; padding: 1rem; border-radius: 10px;'>
-        <h4 style='color:#444;'>Welcome back, <em>{user['name']}</em>! Here's a quick look at your classes, progress, and attendance.</h4>
+    <div style='background-color:{bg_color}; padding:1rem; border-radius:10px; box-shadow:0 0 10px rgba(0,0,0,0.2);'>
+        <h4 style='color:{text_color};'>
+            Welcome back, <em>{user['name']}</em>! Here's a quick look at your classes, progress, and attendance.
+        </h4>
     </div>
     """,
     unsafe_allow_html=True
 )
+
 
 # ----------------- DATA LOADING -----------------
 classes = get_all_remedial_classes()

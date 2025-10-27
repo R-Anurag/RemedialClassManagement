@@ -8,6 +8,147 @@ import pandas as pd
 import plotly.express as px
 
 st.set_page_config(page_title="Teacher Dashboard", layout="wide", page_icon="🏫")
+def apply_theme(theme):
+    if theme == "dark":
+        st.markdown("""
+            <style>
+                /* ==== GENERAL LAYOUT ==== */
+                body, .stApp {
+                    background-color: #0E1117 !important;
+                    color: #E4E6EB !important;
+                }
+
+                /* ==== HEADERS ==== */
+                h1, h2, h3, h4, h5, h6 {
+                    color: #F1F3F5 !important;
+                    font-weight: 600 !important;
+                }
+
+                /* ==== SIDEBAR ==== */
+                section[data-testid="stSidebar"] {
+                    background: linear-gradient(180deg, #1E1E2F 0%, #161625 100%) !important;
+                    color: #E4E6EB !important;
+                    border-right: 1px solid #2C2C3A !important;
+                }
+                section[data-testid="stSidebar"] .css-1v3fvcr {
+                    color: #E4E6EB !important;
+                }
+                section[data-testid="stSidebar"] .css-1v3fvcr:hover {
+                    color: #A4B1FF !important;
+                }
+
+                /* ==== BUTTONS ==== */
+                .stButton>button {
+                    background: linear-gradient(90deg, #6366F1 0%, #8B5CF6 100%) !important;
+                    color: #FFFFFF !important;
+                    border: none !important;
+                    border-radius: 8px !important;
+                    font-weight: 600 !important;
+                    transition: all 0.2s ease-in-out !important;
+                }
+                .stButton>button:hover {
+                    transform: scale(1.03);
+                    box-shadow: 0 0 15px rgba(139, 92, 246, 0.6);
+                }
+
+                /* ==== INPUT FIELDS ==== */
+                input, textarea, select {
+                    background-color: #1A1D26 !important;
+                    color: #E4E6EB !important;
+                    border: 1px solid #3A3A4A !important;
+                    border-radius: 6px !important;
+                }
+
+                /* ==== SLIDERS ==== */
+                div[data-baseweb="slider"] > div {
+                    background: linear-gradient(90deg, #8B5CF6, #6366F1);
+                    height: 6px !important;
+                    border-radius: 3px;
+                }
+
+                /* ==== TABS ==== */
+                .stTabs [role="tablist"] button {
+                    background-color: #1E1E2F !important;
+                    color: #E4E6EB !important;
+                    border-radius: 8px 8px 0 0 !important;
+                    font-weight: 500;
+                }
+                .stTabs [role="tablist"] button[aria-selected="true"] {
+                    background-color: #292B3A !important;
+                    color: #A5B4FC !important;
+                    border-bottom: 3px solid #8B5CF6 !important;
+                }
+
+                /* ==== DATAFRAMES / TABLES ==== */
+                .stDataFrame, .stTable {
+                    background-color: #1A1D26 !important;
+                    color: #F1F3F5 !important;
+                    border-radius: 10px !important;
+                }
+
+                /* ==== EXPANDERS ==== */
+                div[data-testid="stExpander"] {
+                    background-color: #1A1D26 !important;
+                    color: #F1F3F5 !important;
+                    border-radius: 8px !important;
+                    border: 1px solid #2C2C3A !important;
+                }
+
+                /* ==== DOWNLOAD BUTTON ==== */
+                div[data-testid="stDownloadButton"] > button {
+                    background: linear-gradient(90deg, #6366F1, #8B5CF6);
+                    color: white !important;
+                    border: none !important;
+                    border-radius: 8px !important;
+                    font-weight: 600;
+                    transition: 0.3s;
+                }
+                div[data-testid="stDownloadButton"] > button:hover {
+                    transform: scale(1.05);
+                    box-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+                }
+
+                /* ==== FIX: PINK/LIGHT PANELS ==== */
+                div[style*="background-color:#FFF1F4"],
+                div[style*="background-color:#FFEBF0"],
+                div[style*="background-color:#FDF6F0"],
+                div[style*="background-color:#F4F4FC"],
+                div[style*="background-color:#FFEFF1"],
+                div[style*="background-color:#FFFFFF"] {
+                    background-color: #1E1E2F !important;
+                    color: #E4E6EB !important;
+                }
+
+                /* ==== ALERTS (success, warning, info) ==== */
+                .stAlert, .stSuccess, .stWarning, .stInfo {
+                    background-color: #1E1E2F !important;
+                    color: #E4E6EB !important;
+                    border: 1px solid #2C2C3A !important;
+                }
+
+                /* ==== FEEDBACK/FORM BUTTONS VISIBILITY ==== */
+                button[kind="secondary"],
+                button[kind="primary"],
+                .css-1emrehy {
+                    color: #FFFFFF !important;
+                    background: linear-gradient(90deg, #6366F1 0%, #8B5CF6 100%) !important;
+                    border: none !important;
+                }
+
+                /* ==== FIX EXPANDER/CONTAINER BG ==== */
+                div[data-testid="stExpander"], .css-1dp5vir {
+                    background-color: #1A1D26 !important;
+                    color: #E4E6EB !important;
+                    border: 1px solid #2C2C3A !important;
+                }
+            </style>
+        """, unsafe_allow_html=True)
+
+    else:
+        pass
+
+        
+apply_theme(st.session_state["theme"])
 
 # Redirect to login if user not authenticated
 if "user" not in st.session_state or st.session_state.user is None:
@@ -22,15 +163,27 @@ if "user" not in st.session_state or st.session_state.user is None:
 
 # ----------------- HEADER -----------------
 st.title("📘 Teacher Dashboard")
-
-st.markdown(
-    """
-    <div style='background-color:#FFF1F4; padding: 1rem; border-radius: 10px;'>
-        <h4 style='color:#444;'>Welcome Teacher 👩‍🏫 Use this dashboard to manage attendance and performance for your remedial classes.</h4>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+# --- Themed Welcome Message Box ---
+if st.session_state.get("theme", "light") == "dark":
+    # Dark mode styling
+    st.markdown(
+        """
+        <div style='background-color:#1E1E2F; padding: 1rem; border-radius: 10px;'>
+            <h4 style='color:#E4E6EB;'>Welcome Teacher 👩‍🏫 Use this dashboard to manage attendance and performance for your remedial classes.</h4>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+else:
+    # Light mode styling
+    st.markdown(
+        """
+        <div style='background-color:#FFF1F4; padding: 1rem; border-radius: 10px;'>
+            <h4 style='color:#444;'>Welcome Teacher 👩‍🏫 Use this dashboard to manage attendance and performance for your remedial classes.</h4>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
 user = st.session_state.user
 teacher_id = user["user_id"]
