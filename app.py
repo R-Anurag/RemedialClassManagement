@@ -1,7 +1,13 @@
-import streamlit as st
-from utils.auth import login_user, register_user, user_exists
-import sqlite3
-from db_setup import init_database
+# --- Streamlit for web app interface ---
+import streamlit as st  # Used to build interactive web-based UI components
+
+# --- Custom authentication utilities ---
+from utils.auth import login_user, register_user, user_exists  # Functions for handling user authentication and registration
+
+# --- Database handling ---
+import sqlite3  # Built-in SQLite library for lightweight database management
+from db_setup import init_database  # Custom function to initialize or set up the database schema
+
 init_database()
 
 st.set_page_config(page_title="Remedial Class Manager", layout="centered", page_icon="🏫" )
